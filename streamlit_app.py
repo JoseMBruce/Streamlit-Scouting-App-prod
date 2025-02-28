@@ -2,13 +2,13 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 
+# Configura la página para usar el modo ancho
+st.set_page_config(layout="wide")
+
 #Establishing a Google Sheets Connection
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-data = conn.read(worksheet="database", usecols=list(range(6)),ttl=5)
-
-# Configura la página para usar el modo ancho
-st.set_page_config(layout="wide")
+data = conn.read(worksheet="database")
 
 columna1,columna2,columna3, = st.columns([1,3,1])
 with columna1:
