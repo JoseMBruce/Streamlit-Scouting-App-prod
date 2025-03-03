@@ -29,6 +29,8 @@ st.sidebar.header("Filtros para buscar Jugadores")
 # Filtros en la barra lateral
 equipo = st.sidebar.multiselect('Selecciona el Equipo', options=data['Equipo_x'].unique())
 st.sidebar.markdown("\n")  # Espacio entre filtros
+equipo = st.sidebar.multiselect('Selecciona la Liga', options=data['2025_Liga'].unique())
+st.sidebar.markdown("\n")  # Espacio entre filtros
 nacionalidad = st.sidebar.multiselect('Selecciona la Nacionalidad', options=data['Nacionalidad_x'].unique())
 st.sidebar.markdown("\n")  # Espacio entre filtros
 posicion = st.sidebar.multiselect('Selecciona la Posición', options=data['Posición'].unique())
@@ -52,6 +54,9 @@ filtered_data = data.copy()
 
 if equipo:
     filtered_data = filtered_data[filtered_data['Equipo_x'].isin(equipo)]
+
+if equipo:
+    filtered_data = filtered_data[filtered_data['2025_Liga'].isin(equipo)]
 
 if nacionalidad:
     filtered_data = filtered_data[filtered_data['Nacionalidad_x'].isin(nacionalidad)]
