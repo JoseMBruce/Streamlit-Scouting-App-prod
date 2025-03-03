@@ -71,7 +71,7 @@ filtered_data = filtered_data[
 ]
 
 
-columna1,columna2,columna3 = st.columns([1,3,1])
+columna1,columna2,columna3 = st.columns([2,1,6])
 
 with columna1:
     st.metric(label="Cantidad total de jugadores", value=len(filtered_data))
@@ -139,7 +139,7 @@ with columna1:
             st.warning("No se pueden comparar jugadores si alguno no fue encontrado.")
 
     
-with columna2:  
+with columna3:  
 # Mostrar datos filtrados
     columnas_seleccionadas = ["Nombre Jugador","Posición","Posicion Secundaria","Edad_x","Nacionalidad_x","Equipo_x","Valoracion Scouting"]
     st.subheader("Tabla con vista preeliminar")
