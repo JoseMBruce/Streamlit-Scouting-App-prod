@@ -37,19 +37,19 @@ def run_app():
     st.sidebar.header("Filtros para buscar Jugadores")
 
     # Filtros en la barra lateral
-    equipo = st.sidebar.multiselect('Selecciona el Equipo', options=data['Equipo_x'].unique())
+    equipo = st.sidebar.multiselect('Selecciona el Equipo', options=data['Equipo'].unique())
     st.sidebar.markdown("\n")  # Espacio entre filtros
     liga = st.sidebar.multiselect('Selecciona la Liga', options=data['2025_Liga'].unique())
     st.sidebar.markdown("\n")  # Espacio entre filtros
-    nacionalidad = st.sidebar.multiselect('Selecciona la Nacionalidad', options=data['Nacionalidad_x'].unique())
+    nacionalidad = st.sidebar.multiselect('Selecciona la Nacionalidad', options=data['Nacionalidad'].unique())
     st.sidebar.markdown("\n")  # Espacio entre filtros
     posicion = st.sidebar.multiselect('Selecciona la Posición', options=data['Posición'].unique())
     st.sidebar.markdown("\n")  # Espacio entre filtros
     valoracion_scouting = st.sidebar.multiselect('Selecciona la Valoración Scouting', options=data['Valoracion Scouting'].unique())
     st.sidebar.markdown("\n")  # Espacio entre filtros
 
-    edad_min = int(data['Edad_x'].min())
-    edad_max = int(data['Edad_x'].max())
+    edad_min = int(data['Edad'].min())
+    edad_max = int(data['Edad'].max())
 
     edad_filtro = st.sidebar.slider(
         'Selecciona el rango de Edad',
@@ -63,13 +63,13 @@ def run_app():
     filtered_data = data.copy()
 
     if equipo:
-        filtered_data = filtered_data[filtered_data['Equipo_x'].isin(equipo)]
+        filtered_data = filtered_data[filtered_data['Equipo'].isin(equipo)]
 
     if liga:
         filtered_data = filtered_data[filtered_data['2025_Liga'].isin(liga)]
 
     if nacionalidad:
-        filtered_data = filtered_data[filtered_data['Nacionalidad_x'].isin(nacionalidad)]
+        filtered_data = filtered_data[filtered_data['Nacionalidad'].isin(nacionalidad)]
 
     if posicion:
         filtered_data = filtered_data[filtered_data['Posición'].isin(posicion)]
@@ -81,8 +81,8 @@ def run_app():
 
 
     filtered_data = filtered_data[
-        (pd.isna(filtered_data['Edad_x'])) | 
-        ((filtered_data['Edad_x'] >= edad_filtro[0]) & (filtered_data['Edad_x'] <= edad_filtro[1]))
+        (pd.isna(filtered_data['Edad'])) | 
+        ((filtered_data['Edad'] >= edad_filtro[0]) & (filtered_data['Edad'] <= edad_filtro[1]))
     ]
 
 
@@ -156,7 +156,7 @@ def run_app():
         
     with columna3:  
     # Mostrar datos filtrados
-        columnas_seleccionadas = ["Nombre Jugador","Posición","Posicion Secundaria","Edad_x","Nacionalidad_x","Equipo_x","Valoracion Scouting"]
+        columnas_seleccionadas = ["Nombre Jugador","Posición","Posicion Secundaria","Edad","Nacionalidad","Equipo","Valoracion Scouting"]
         st.subheader("Tabla con vista preeliminar")
         st.write("")  # Segundo salto de línea
         st.dataframe(filtered_data[columnas_seleccionadas])
@@ -182,17 +182,17 @@ def run_app():
                 with col1:
                     st.write("")  # Segundo salto de línea
                     st.write(f"**Posición:** {jugador_info['Posición']}")
-                    st.write(f"**Edad:** {jugador_info['Edad_x']}")
+                    st.write(f"**Edad:** {jugador_info['Edad']}")
                     st.write(f"**Altura:** {jugador_info['Altura']}")
                     st.write(f"**Peso:** {jugador_info['Peso']}")
-                    st.write(f"**Pie dominante:** {jugador_info['Pie_x']}")
+                    st.write(f"**Pie dominante:** {jugador_info['Pie']}")
                     st.write(f"**Valoración Scouting:** {jugador_info['Valoracion Scouting']}")
                 
                 with col2:
                     st.write("")  # Segundo salto de línea
                     st.write(f"**Posición Secundaria:** {jugador_info['Posicion Secundaria']}")
-                    st.write(f"**Equipo actual:** {jugador_info['Equipo_x']}")
-                    st.write(f"**Nacionalidad:** {jugador_info['Nacionalidad_x']}")
+                    st.write(f"**Equipo actual:** {jugador_info['Equipo']}")
+                    st.write(f"**Nacionalidad:** {jugador_info['Nacionalidad']}")
                     st.write(f"**Fecha de nacimiento:** {jugador_info['Fecha de nacimiento']}")
                     st.write(f"**Score:** {jugador_info['ELO']}")
                     # Agregar selectbox para valoración del scouting
@@ -331,19 +331,19 @@ def run_app():
                 # Mostrar detalles del primer jugador
                 with col1:
                     st.write(f"**Posición:** {jugador_info_1['Posición']}")
-                    st.write(f"**Edad:** {jugador_info_1['Edad_x']}")
+                    st.write(f"**Edad:** {jugador_info_1['Edad']}")
                     st.write(f"**Altura:** {jugador_info_1['Altura']}")
                     st.write(f"**Peso:** {jugador_info_1['Peso']}")
-                    st.write(f"**Pie dominante:** {jugador_info_1['Pie_x']}")
+                    st.write(f"**Pie dominante:** {jugador_info_1['Pie']}")
                     st.write(f"**Score:** {jugador_info_1['ELO']}")
 
                 # Mostrar detalles del segundo jugador
                 with col2:
                     st.write(f"**Posición:** {jugador_info_2['Posición']}")
-                    st.write(f"**Edad:** {jugador_info_2['Edad_x']}")
+                    st.write(f"**Edad:** {jugador_info_2['Edad']}")
                     st.write(f"**Altura:** {jugador_info_2['Altura']}")
                     st.write(f"**Peso:** {jugador_info_2['Peso']}")
-                    st.write(f"**Pie dominante:** {jugador_info_2['Pie_x']}")
+                    st.write(f"**Pie dominante:** {jugador_info_2['Pie']}")
                     st.write(f"**Score:** {jugador_info_2['ELO']}")
 
                 # Estadísticas por temporada
