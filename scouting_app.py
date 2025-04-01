@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 def run_app():
 
@@ -455,3 +456,65 @@ def run_app():
 
                 st.write("Habilidades del Segundo Jugador:")
                 st.write(df_habilidades_2_filtrado)
+
+                st.subheader("Comparación de habilidades: Radar Plot")
+
+                # 1. Determinar las columnas comunes de habilidades, para evitar errores si un jugador no tiene una columna que el otro sí.
+                common_columns = list(set(df_habilidades_1_filtrado.columns).intersection(df_habilidades_2_filtrado.columns))
+                common_columns.sort()  # para que no aparezcan en orden aleatorio
+
+                if len(common_columns) == 0:
+                    st.warning("No hay habilidades en común para hacer el radar.")
+                else:
+                    # 2. Obtener valores en el mismo orden
+                    values_1 = df_habilidades_1_filtrado[common_columns].iloc[0].values.tolist()
+                    values_2 = df_habilidades_2_filtrado[common_columns].iloc[0].values.tolist()
+
+                    # 3. Preparar los ángulos para cada uno de los ejes del radar
+                    num_vars = len(common_columns)
+                    angles = [n / float(num_vars) * 2 * np.pi for n in range(num_vars)]
+                    angles += angles[:1]  # repetir el primer ángulo para cerrar el círculo
+
+                    # 4. Repetir primer valor para cerrar el polígono
+                    values_1 += values_1[:1]
+                    values_2 += values_2[:1]
+
+                    # 5. Crear la figura de matplotlib en modo polar
+                    fig = plt.figure(figsize=(6, 6))
+                    ax = plt.subplot(111, polar=True)
+
+                    fig.patch.set_facecolor('#0E1117')  # Fondo de la figura
+                    ax.set_facecolor('#3E3E3E')         # Fondo del área de dibujo
+
+                    # Configurar ejes
+                    ax.set_xticks(angles[:-1])
+                    # color y estilo de la etiqueta de las habilidades
+                    ax.set_xticklabels(common_columns, color='white', fontsize=10, fontweight='bold')  
+
+                    # Líneas de rejilla y borde del radar
+                    ax.spines["polar"].set_color("white")
+                    ax.grid(color='white', alpha=0.3)
+
+                    # Plot del jugador 1
+                    nombre_1 = jugador_info_1['Nombre Jugador']
+                    ax.plot(angles, values_1, color='cyan', linewidth=2, label=nombre_1)
+                    ax.fill(angles, values_1, color='cyan', alpha=0.2)
+
+                    # Plot del jugador 2
+                    nombre_2 = jugador_info_2['Nombre Jugador']
+                    ax.plot(angles, values_2, color='orange', linewidth=2, label=nombre_2)
+                    ax.fill(angles, values_2, color='orange', alpha=0.2)
+
+                    # Ajustar límites del radio
+                    max_val = max(max(values_1), max(values_2))
+                    ax.set_ylim(0, max_val * 1.1)
+
+                    # Título
+                    ax.set_title(f"Radar de Habilidades: {nombre_1} vs {nombre_2}", color='white', y=1.08)
+                    legend=ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1), facecolor='#0E1117', edgecolor='none')
+                    for text in legend.get_texts():
+                        text.set_color("white")
+
+
+                    # 6. Mostrar en Streamlit
+                    st.pyplot(fig)
